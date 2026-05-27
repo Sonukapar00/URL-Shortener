@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="brandTitle">
+  <title id="brandTitle">URL Shortener Logo</title>
+  <defs>
+    <linearGradient id="brandGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="#0f172a" />
+  <path d="M36 36h18v12H36zM36 60h18v12H36zM36 84h48v12H36z" fill="url(#brandGradient)" />
+  <path d="M66 36h18v12H66zM66 60h18v12H66z" fill="#e2e8f0" opacity="0.22" />
+</svg>

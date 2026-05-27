@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "outputDirectory": "dist",
+  "env": {
+    "VITE_API_BASE_URL": {
+      "description": "Backend API base URL",
+      "required": true
+    }
+  },
+  "env.development": {
+    "VITE_API_BASE_URL": "http://localhost:3000/api"
+  }
+}

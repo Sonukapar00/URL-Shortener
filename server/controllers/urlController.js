@@ -1,24 +1,24 @@
 const Url = require('../models/Url');
 
-const getDashboard = async (req, res) => {
+const getShortUrls = async (req, res) => {
   const shortUrls = await Url.find().sort({ createdAt: -1 });
-  res.render('index', { shortUrls });
+  res.json(shortUrls);
 };
 
 const createShortUrl = async (req, res) => {
   const fullUrl = req.body.fullUrl?.trim();
   if (!fullUrl) {
-    return res.status(400).send('A valid URL is required.');
+    return res.status(400).json({ message: 'A valid URL is required.' });
   }
 
-  await Url.create({ fullUrl });
-  res.redirect('/');
+  const newUrl = await Url.create({ fullUrl });
+  res.status(201).json(newUrl);
 };
 
 const redirectShortUrl = async (req, res) => {
   const shortUrl = await Url.findOne({ shortCode: req.params.shortCode });
   if (!shortUrl) {
-    return res.status(404).send('Short URL not found');
+    return res.status(404).json({ message: 'Short URL not found' });
   }
 
   shortUrl.clicks += 1;
@@ -30,14 +30,14 @@ const redirectShortUrl = async (req, res) => {
 const deleteShortUrl = async (req, res) => {
   const shortUrl = await Url.findByIdAndDelete(req.params.id);
   if (!shortUrl) {
-    return res.status(404).send('Link not found.');
+    return res.status(404).json({ message: 'Link not found.' });
   }
 
-  res.redirect('/');
+  res.json({ message: 'Link deleted successfully.' });
 };
 
 module.exports = {
-  getDashboard,
+  getShortUrls,
   createShortUrl,
   redirectShortUrl,
   deleteShortUrl,
