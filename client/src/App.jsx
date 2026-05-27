@@ -61,7 +61,9 @@ const App = () => {
 
   // Handle copying short URL to clipboard
   const handleCopy = async (shortCode) => {
-    const shortUrl = `${window.location.origin}/${shortCode}`;
+    const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/url';
+    const backendOrigin = apiBase.replace(/\/api\/.*$/, '');
+    const shortUrl = `${backendOrigin}/${shortCode}`;
     try {
       await navigator.clipboard.writeText(shortUrl);
       notify('📋 Short URL copied to clipboard!');

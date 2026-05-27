@@ -27,15 +27,27 @@ const createShortUrl = async (req, res) => {
 };
 
 const redirectShortUrl = async (req, res) => {
-  const shortUrl = await Url.findOne({ shortCode: req.params.shortCode });
-  if (!shortUrl) {
-    return res.status(404).json({ message: 'Short URL not found' });
+  try {
+    const { shortCode } = req.params;
+    console.log(`Redirect request received for shortCode=${shortCode}`);
+
+    const shortUrl = await Url.findOne({ shortCode });
+    if (!shortUrl) {
+      console.warn(`Short URL not found for code=${shortCode}`);
+      // Redirect to root (will serve frontend) when not found
+      return res.redirect('/');
+    }
+
+    shortUrl.clicks = (shortUrl.clicks || 0) + 1;
+    await shortUrl.save();
+
+    console.log(`Redirecting to ${shortUrl.fullUrl} (code=${shortCode})`);
+    return res.redirect(shortUrl.fullUrl);
+  } catch (error) {
+    console.error('Error during redirect:', error);
+    // On error, safely redirect to root
+    return res.redirect('/');
   }
-
-  shortUrl.clicks += 1;
-  await shortUrl.save();
-
-  res.redirect(shortUrl.fullUrl);
 };
 
 const deleteShortUrl = async (req, res) => {

@@ -83,15 +83,22 @@ const UrlTable = ({ urls, loading, onCopy, onDelete }) => (
 
                 {/* Short Link */}
                 <td className="px-6 py-4 sm:px-8">
-                  <a
-                    href={`/${item.shortCode}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg bg-slate-950/80 px-3 py-2 text-sm text-slate-100 font-mono border border-white/10 group-hover:border-cyan-500/30 transition-colors break-all"
-                  >
-                    <span className="truncate">/{item.shortCode}</span>
-                    <span className="hidden text-xs text-slate-400 sm:inline">↗</span>
-                  </a>
+                  {(() => {
+                    const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/url';
+                    const backendOrigin = apiBase.replace(/\/api\/.*$/, '');
+                    const redirectHref = `${backendOrigin}/${item.shortCode}`;
+                    return (
+                      <a
+                        href={redirectHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 rounded-lg bg-slate-950/80 px-3 py-2 text-sm text-slate-100 font-mono border border-white/10 group-hover:border-cyan-500/30 transition-colors break-all"
+                      >
+                        <span className="truncate">{redirectHref}</span>
+                        <span className="hidden text-xs text-slate-400 sm:inline">↗</span>
+                      </a>
+                    );
+                  })()}
                 </td>
 
                 {/* Click count */}
