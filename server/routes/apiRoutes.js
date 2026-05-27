@@ -3,8 +3,8 @@ const router = express.Router();
 const { validateUrl } = require('../middlewares/validateUrl');
 const { getShortUrls, createShortUrl, deleteShortUrl } = require('../controllers/urlController');
 
-router.get('/shorturls', getShortUrls);
-router.post('/shorturls', validateUrl, createShortUrl);
-router.delete('/shorturls/:id', deleteShortUrl);
+router.get('/', getShortUrls);
+router.post('/', validateUrl, createShortUrl);
+router.delete('/:id', deleteShortUrl);
 
 module.exports = router;

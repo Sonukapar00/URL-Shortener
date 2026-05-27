@@ -1,18 +1,29 @@
 const Url = require('../models/Url');
 
 const getShortUrls = async (req, res) => {
-  const shortUrls = await Url.find().sort({ createdAt: -1 });
-  res.json(shortUrls);
+  try {
+    const shortUrls = await Url.find().sort({ createdAt: -1 });
+    return res.json(shortUrls);
+  } catch (error) {
+    console.error('Error fetching short URLs:', error);
+    return res.status(500).json({ message: 'Failed to fetch URLs', error: error.message });
+  }
 };
 
 const createShortUrl = async (req, res) => {
-  const fullUrl = req.body.fullUrl?.trim();
-  if (!fullUrl) {
-    return res.status(400).json({ message: 'A valid URL is required.' });
-  }
+  try {
+    console.log('Request body:', req.body);
+    const fullUrl = req.body.fullUrl?.trim();
+    if (!fullUrl) {
+      return res.status(400).json({ message: 'A valid URL is required.' });
+    }
 
-  const newUrl = await Url.create({ fullUrl });
-  res.status(201).json(newUrl);
+    const newUrl = await Url.create({ fullUrl });
+    return res.status(201).json(newUrl);
+  } catch (error) {
+    console.error('Error creating short URL:', error);
+    return res.status(500).json({ message: 'Failed to create short URL', error: error.message });
+  }
 };
 
 const redirectShortUrl = async (req, res) => {

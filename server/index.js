@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const connectMongoDB = require('./config/db');
 const apiRoutes = require('./routes/apiRoutes');
@@ -11,7 +12,8 @@ const clientDist = path.resolve(__dirname, '../client/dist');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/api', apiRoutes);
+app.use(cors());
+app.use('/api/url', apiRoutes);
 app.use(express.static(clientDist));
 app.use('/', urlRoutes);
 
